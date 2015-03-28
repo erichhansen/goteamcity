@@ -5,11 +5,10 @@ import(
     "encoding/json"
     "os"
     "net/http"
-    "io/ioutil"
     "log"
 )
 
-const requestPath string = "/httpAuth/app/rest/cctray/projects.xml"
+const projectRequestPath string = "/httpAuth/app/rest/cctray/projects.xml"
 
 type configuration struct {
     TeamCityUrl string
@@ -19,7 +18,7 @@ type configuration struct {
 
 func GetTeamCityStatus() string {
     config := getTeamCityConfig()
-    url := config.TeamCityUrl + requestPath;
+    url := config.TeamCityUrl + projectRequestPath;
 
     client := &http.Client{}
 
@@ -30,16 +29,11 @@ func GetTeamCityStatus() string {
     resp, err := client.Do(req)
     if err != nil {
         log.Fatalf("Error: %s", err)
-    } else {
-        defer resp.Body.Close()
-        contents, err := ioutil.ReadAll(resp.Body)
-        if err != nil {
-            log.Fatalf("Error: %s", err)
-        }
-        fmt.Println(string(contents))
-    }
+    } 
 
-    return "ToDo"
+    status := parseResponse(resp.Body)
+    fmt.Println(status)
+    return status
 }
   
 func getTeamCityConfig() configuration {
