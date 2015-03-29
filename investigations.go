@@ -17,7 +17,15 @@ type investigation struct {
     State string
 }
 
-func isInvestigating(name string) bool {
+type investigationReader interface {
+    ReadInvestigation(resp io.ReadCloser) bool
+    IsInvestigating(name string) bool
+}
+
+type teamCityInvestigationReader struct {    
+}
+
+func (r teamCityInvestigationReader) IsInvestigating(name string) bool {
 	config := getTeamCityConfig()
     url := config.TeamCityUrl + fmt.Sprintf(investigationsPath, name);
 	client := &http.Client{}
@@ -30,10 +38,10 @@ func isInvestigating(name string) bool {
     if err != nil {
         log.Fatalf("Error: %s", err)
     } 
-	return parseInvestigation(resp.Body);
+    return r.ReadInvestigation(resp.Body);
 }
 
-func parseInvestigation(resp io.ReadCloser) bool {
+func (r teamCityInvestigationReader) ReadInvestigation(resp io.ReadCloser) bool {
 	decoder := json.NewDecoder(resp)
     response := investigationsResponse{}
     err := decoder.Decode(&response)
