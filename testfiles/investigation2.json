@@ -1,0 +1,47 @@
+{
+    "count": 1,
+    "href": "/httpAuth/app/rest/investigations?locator=buildType:(name:Name)",
+    "investigation": [
+        {
+            "target": {
+                "anyProblem": true
+            },
+            "assignment": {
+                "timestamp": "20150328T213920-0400",
+                "user": {
+                    "username": "user",
+                    "href": "/httpAuth/app/rest/users/id:5",
+                    "name": "Erich",
+                    "id": 5
+                }
+            },
+            "assignee": {
+                "username": "user",
+                "href": "/httpAuth/app/rest/users/id:5",
+                "name": "Erich",
+                "id": 5
+            },
+            "state": "GIVEN_UP",
+            "href": "/app/rest/investigations/buildType:(id:bt20)",
+            "scope": {
+                "buildTypes": {
+                    "count": 1,
+                    "buildType": [
+                        {
+                            "name": "Name",
+                            "projectId": "ProjectId",
+                            "webUrl": "http://teamcityurl",
+                            "href": "/httpAuth/app/rest/buildTypes/id:bt20",
+                            "projectName": "Project",
+                            "id": "bt20"
+                        }
+                    ]
+                }
+            },
+            "resolution": {
+                "type": "whenFixed"
+            },
+            "id": "buildType:(id:bt20)"
+        }
+    ]
+}
