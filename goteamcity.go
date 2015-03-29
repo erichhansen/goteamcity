@@ -23,7 +23,8 @@ func GetTeamCityStatus() string {
         log.Fatalf("Error: %s", err)
     } 
 
-    status := parseResponse(resp.Body)
+    r := teamcityResponse{}
+    status := parseResponse(resp.Body, r)
     fmt.Println(status)
     return status
 }

@@ -4,46 +4,39 @@ import(
     "encoding/json"
     "io"
     "log"
-    "strings"
 )
 
 const Success string = "Success"
 const Fail string = "Fail"
 const Investigating string = "Investigating"
-
-type project struct {
-	Name string
-	WebUrl string
-	LastBuildTime string
-	LastBuildLabel string
-	LastBuildStatus string
-}
-
-type teamcityResponse struct {
-	Project []project
-}
-
 var investigationsPath string = "/httpAuth/app/rest/investigations?locator=buildType:(name:%s)"
 
-func parseResponse(response io.ReadCloser) string {
+type teamcityResponse struct {
+	Project []investigater
+}
+
+type project struct {
+    Name, WebUrl, LastBuildTime, LastBuildLabel, LastBuildStatus string
+}
+
+func parseResponse(response io.ReadCloser, r teamcityResponse) string {
     decoder := json.NewDecoder(response)
-    teamCityStatus := teamcityResponse{}
-    err := decoder.Decode(&teamCityStatus)
+    err := decoder.Decode(&r)
     if err != nil {
         log.Fatalf("Error: %s", err)
     }
-    projectCount := len(teamCityStatus.Project)
+    projectCount := len(r.Project)
     successCount := 0
     failureCount := 0
     investigateCount := 0
 
     for i := 0; i < projectCount; i++ {
-        buildStatus := teamCityStatus.Project[i].LastBuildStatus
+    	proj := r.Project[i]
+        buildStatus := proj.LastStatus()
         if buildStatus == "Success" {
         	successCount++
         } else if buildStatus == "Failure" {
-        	name := parseName(teamCityStatus.Project[i].Name)
-        	if isInvestigating(name) {
+        	if proj.IsInvestigating() {
         		investigateCount++
         	}
         	failureCount++
@@ -59,11 +52,5 @@ func parseResponse(response io.ReadCloser) string {
     return Fail
 }
 
-func parseName(name string) string {
-	pos := strings.LastIndex(name, "::")
-	if pos < 0 {
-		return name
-	}
 
-	return strings.Trim(name[pos + 2:len(name)], " ")
-}
+

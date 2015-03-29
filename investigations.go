@@ -6,7 +6,13 @@ import(
     "net/http"
     "io"
     "log"
+    "strings"
 )
+
+type investigater interface {
+    IsInvestigating() bool
+    LastStatus() string
+}
 
 type investigationsResponse struct {
     Investigation []investigation
@@ -17,7 +23,13 @@ type investigation struct {
     State string
 }
 
-func isInvestigating(name string) bool {
+func (p project) LastStatus() string {
+    return p.LastBuildStatus
+}
+
+func (p project) IsInvestigating() bool {
+    name := parseName(p.Name)
+
 	config := getTeamCityConfig()
     url := config.TeamCityUrl + fmt.Sprintf(investigationsPath, name);
 	client := &http.Client{}
@@ -31,6 +43,15 @@ func isInvestigating(name string) bool {
         log.Fatalf("Error: %s", err)
     } 
 	return parseInvestigation(resp.Body);
+}
+
+func parseName(name string) string {
+    pos := strings.LastIndex(name, "::")
+    if pos < 0 {
+        return name
+    }
+
+    return strings.Trim(name[pos + 2:len(name)], " ")
 }
 
 func parseInvestigation(resp io.ReadCloser) bool {
