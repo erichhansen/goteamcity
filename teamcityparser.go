@@ -25,7 +25,7 @@ type teamcityResponse struct {
 
 var investigationsPath string = "/httpAuth/app/rest/investigations?locator=buildType:(name:%s)"
 
-func parseResponse(response io.ReadCloser) string {
+func parseResponse(response io.ReadCloser, r investigationReader) string {
     decoder := json.NewDecoder(response)
     teamCityStatus := teamcityResponse{}
     err := decoder.Decode(&teamCityStatus)
@@ -43,7 +43,7 @@ func parseResponse(response io.ReadCloser) string {
         	successCount++
         } else if buildStatus == "Failure" {
         	name := parseName(teamCityStatus.Project[i].Name)
-        	if isInvestigating(name) {
+        	if r.IsInvestigating(name) {
         		investigateCount++
         	}
         	failureCount++
