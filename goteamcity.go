@@ -10,12 +10,6 @@ import(
 
 const projectRequestPath string = "/httpAuth/app/rest/cctray/projects.xml"
 
-type configuration struct {
-    TeamCityUrl string
-    TeamCityUsername string
-    TeamCityPassword string
-}
-
 func GetTeamCityStatus() string {
     config := getTeamCityConfig()
     url := config.TeamCityUrl + projectRequestPath;
@@ -35,17 +29,4 @@ func GetTeamCityStatus() string {
     fmt.Println(status)
     return status
 }
-  
-func getTeamCityConfig() configuration {
-    file, err := os.Open("conf.json")
-    if err != nil {
-        fmt.Println("error:", err)
-    }
-    decoder := json.NewDecoder(file)
-    config := configuration{}
-    err = decoder.Decode(&config)
-    if err != nil {
-        fmt.Println("error:", err)
-    }
-    return config;
-}
+ 
