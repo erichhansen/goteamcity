@@ -2,8 +2,6 @@ package goteamcity
 
 import(
     "fmt"
-    "encoding/json"
-    "os"
     "net/http"
     "log"
 )

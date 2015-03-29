@@ -4,8 +4,6 @@ import(
     "fmt"
     "encoding/json"
     "os"
-    "net/http"
-    "log"
 )
 
 type configuration struct {
