@@ -1,4 +1,4 @@
- package goteamcity
+package goteamcity
 
 import(
     "fmt"
@@ -11,7 +11,7 @@ func TestParseInvestigationShouldReturnTrue(t *testing.T) {
     if err != nil {
         fmt.Println("error:", err)
     }
-    
+
     reader := teamCityInvestigationReader{}
     isInvg := reader.ReadInvestigation(file)
 
@@ -19,7 +19,6 @@ func TestParseInvestigationShouldReturnTrue(t *testing.T) {
     	t.Fatalf("Should be investigating")
     }
 }
-
 
 func TestParseInvestigationShouldReturnFalse(t *testing.T) {
 	file, err := os.Open("testfiles/investigation2.json")
@@ -34,4 +33,3 @@ func TestParseInvestigationShouldReturnFalse(t *testing.T) {
     	t.Fatalf("Should not be investigating")
     }
 }
-

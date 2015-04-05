@@ -9,7 +9,8 @@ import(
 const projectRequestPath string = "/httpAuth/app/rest/cctray/projects.xml"
 
 func GetTeamCityStatus() string {
-    config := getTeamCityConfig()
+    teamCityConfig := teamCityConfig{ConfigFilePath: "conf.json"}
+    config := teamCityConfig.getConfig();
     url := config.TeamCityUrl + projectRequestPath;
 
     client := &http.Client{}
@@ -21,11 +22,10 @@ func GetTeamCityStatus() string {
     resp, err := client.Do(req)
     if err != nil {
         log.Fatalf("Error: %s", err)
-    } 
-    
+    }
+
     reader := teamCityInvestigationReader{}
     status := parseResponse(resp.Body, reader)
     fmt.Println(status)
     return status
 }
- 
