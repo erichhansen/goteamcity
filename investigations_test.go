@@ -1,4 +1,4 @@
- package goteamcity
+package goteamcity
 
 import(
     "fmt"
@@ -19,7 +19,6 @@ func TestParseInvestigationShouldReturnTrue(t *testing.T) {
     	t.Fatalf("Should be investigating")
     }
 }
-
 
 func TestParseInvestigationShouldReturnFalse(t *testing.T) {
 	file, err := os.Open("testfiles/investigation2.json")
