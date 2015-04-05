@@ -6,14 +6,22 @@ import(
     "os"
 )
 
+type teamCityConfig struct {
+  ConfigFilePath string
+}
+
+type configurer interface {
+  getConfig() configuration
+}
+
 type configuration struct {
     TeamCityUrl string
     TeamCityUsername string
     TeamCityPassword string
 }
 
-func getTeamCityConfig() configuration {
-    file, err := os.Open("conf.json")
+func (tcConfig teamCityConfig) getConfig() configuration {
+    file, err := os.Open(tcConfig.ConfigFilePath)
     if err != nil {
         fmt.Println("error:", err)
     }

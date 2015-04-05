@@ -11,7 +11,7 @@ func TestParseInvestigationShouldReturnTrue(t *testing.T) {
     if err != nil {
         fmt.Println("error:", err)
     }
-    
+
     reader := teamCityInvestigationReader{}
     isInvg := reader.ReadInvestigation(file)
 
@@ -34,4 +34,3 @@ func TestParseInvestigationShouldReturnFalse(t *testing.T) {
     	t.Fatalf("Should not be investigating")
     }
 }
-

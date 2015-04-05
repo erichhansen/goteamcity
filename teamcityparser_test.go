@@ -27,7 +27,7 @@ func TestParseResponseShouldBeFail(t *testing.T) {
 
     stub := stubInvestigationReader{}
     status := parseResponse(file, stub)
-    
+
     if status != Fail {
     	t.Fatalf("Should be Fail state")
     }
@@ -41,7 +41,7 @@ func TestParseResponseShouldBeInvestigating(t *testing.T) {
 
     stub := stubInvestigationReader{Investigating: true}
     status := parseResponse(file, stub)
-    
+
     if status != Investigating {
         t.Fatalf("Should be Investigating state")
     }
@@ -55,7 +55,7 @@ func TestParseResponseShouldBeSucess(t *testing.T) {
 
     stub := stubInvestigationReader{Investigating: true}
     status := parseResponse(file, stub)
-    
+
     if status != Success {
         t.Fatalf("Should be Success state")
     }

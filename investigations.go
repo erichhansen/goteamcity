@@ -13,7 +13,7 @@ type investigationsResponse struct {
 }
 
 type investigation struct {
-    // there is a lot more to this but I only care about this
+    // there is a lot more to this but I only care about state
     State string
 }
 
@@ -22,23 +22,24 @@ type investigationReader interface {
     IsInvestigating(name string) bool
 }
 
-type teamCityInvestigationReader struct {    
+type teamCityInvestigationReader struct {
 }
 
 func (r teamCityInvestigationReader) IsInvestigating(name string) bool {
-	config := getTeamCityConfig()
-    url := config.TeamCityUrl + fmt.Sprintf(investigationsPath, name);
-	client := &http.Client{}
+  teamCityConfig := teamCityConfig{ConfigFilePath: "conf.json"}
+  config := teamCityConfig.getConfig();
+  url := config.TeamCityUrl + fmt.Sprintf(investigationsPath, name);
+  client := &http.Client{}
 
-    req, err := http.NewRequest("GET", url, nil)
-    req.Header.Add("Accept", "application/json")
-    req.SetBasicAuth(config.TeamCityUsername, config.TeamCityPassword)
+  req, err := http.NewRequest("GET", url, nil)
+  req.Header.Add("Accept", "application/json")
+  req.SetBasicAuth(config.TeamCityUsername, config.TeamCityPassword)
 
-    resp, err := client.Do(req)
-    if err != nil {
-        log.Fatalf("Error: %s", err)
-    } 
-    return r.ReadInvestigation(resp.Body);
+  resp, err := client.Do(req)
+  if err != nil {
+    log.Fatalf("Error: %s", err)
+  }
+  return r.ReadInvestigation(resp.Body);
 }
 
 func (r teamCityInvestigationReader) ReadInvestigation(resp io.ReadCloser) bool {
@@ -49,7 +50,7 @@ func (r teamCityInvestigationReader) ReadInvestigation(resp io.ReadCloser) bool 
         log.Fatalf("Error: %s", err)
     }
 
-    // should be at most 1 
+    // should be at most 1
     investigationCount := len(response.Investigation)
     if investigationCount == 0 {
         return false

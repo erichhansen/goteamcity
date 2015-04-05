@@ -49,12 +49,12 @@ func parseResponse(response io.ReadCloser, r investigationReader) string {
         	failureCount++
         }
     }
-    
+
     if successCount > 0 && failureCount == 0 {
     	return Success
     } else if failureCount == investigateCount {
     	return Investigating
-    } 
+    }
 
     return Fail
 }
