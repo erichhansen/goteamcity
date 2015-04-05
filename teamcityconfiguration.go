@@ -17,6 +17,8 @@ func getTeamCityConfig() configuration {
     if err != nil {
         fmt.Println("error:", err)
     }
+    defer file.Close();
+
     decoder := json.NewDecoder(file)
     config := configuration{}
     err = decoder.Decode(&config)
