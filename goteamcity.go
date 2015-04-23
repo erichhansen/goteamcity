@@ -23,7 +23,8 @@ func GetTeamCityStatus() string {
     if err != nil {
         log.Fatalf("Error: %s", err)
     }
-
+    defer resp.Body.Close()
+    
     reader := teamCityInvestigationReader{}
     status := parseResponse(resp.Body, reader)
     fmt.Println(status)
